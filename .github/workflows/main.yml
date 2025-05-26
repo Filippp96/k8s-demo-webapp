@@ -61,26 +61,26 @@ jobs:
           push: true
           tags: acrk8sdemoappdev.azurecr.io/images:app-${{ github.run_number }}
 
-# modifygit:
-#   needs: docker
-#   runs-on: ubuntu-latest
-#   steps:
-#     - uses: actions/checkout@v3
-#       name: Changing the deployment of git repo
-#       with:
-#         repository: 'Filippp96/k8s-demo-kubernetes'
-#         token: ${{ secrets.GIT_PASSWORD }}
-#     - name: Modify the image
-#       run: |
-#         git config user.email filipkk96@gmail.com
-#         git config user.name Filippp96
-#         pwd
-#         cat deployment.yaml
-#         sed -i "s+tanmay238/images.*+acrk8sdemoappdev.azurecr.io.io/images:app-${{ github.run_number }}+g" deployment.yaml
-#         cat deployment.yaml
-#         git add .
-#         git commit -m 'Updated image to acrk8sdemoappdev.azurecr.io/images:app-${{ github.run_number }} by GitHub Actions'
-#         git push origin main
-#       env:
-#         GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
-#         GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
+  modifygit:
+   needs: docker
+   runs-on: ubuntu-latest
+   steps:
+     - uses: actions/checkout@v3
+       name: Changing the deployment of git repo
+       with:
+         repository: 'Filippp96/k8s-demo-kubernetes'
+         token: ${{ secrets.GIT_PASSWORD }}
+     - name: Modify the image
+       run: |
+         git config user.email filipkk96@gmail.com
+         git config user.name Filippp96
+         pwd
+         cat deployment.yaml
+         sed -i "s+tanmay238/images.*+acrk8sdemoappdev.azurecr.io.io/images:app-${{ github.run_number }}+g" deployment.yaml
+         cat deployment.yaml
+         git add .
+         git commit -m 'Updated image to acrk8sdemoappdev.azurecr.io/images:app-${{ github.run_number }} by GitHub Actions'
+         git push origin main
+       env:
+         GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+         GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
