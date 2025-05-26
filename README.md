@@ -1,1 +1,1 @@
-# k8s-demo-webapp
+App works on TCP 5000 port.
