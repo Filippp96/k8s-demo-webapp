@@ -76,7 +76,7 @@ jobs:
          git config user.name Filippp96
          pwd
          cat deployment.yaml
-         sed -i "s+k8s-demo-app-acr.azurecr.io/images.*+acrk8sdemoappdev.azurecr.io/images:app-${{ github.run_number }}+g" deployment.yaml
+         sed -i "s+acrk8sdemoappdev.azurecr.io/images:app-${{ github.run_number }}+g" deployment.yaml
          cat deployment.yaml
          git add .
          git commit -m 'Updated image to acrk8sdemoappdev.azurecr.io/images:app-${{ github.run_number }} by GitHub Actions'
