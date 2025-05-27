@@ -60,28 +60,29 @@ jobs:
           context: .
           push: true
           tags: acrk8sdemoappdev.azurecr.io/images:app-${{ github.run_number }}
+         
+  manifest:
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target repository
+        uses: actions/checkout@v4
+        with:
+          repository: Filippp96/k8s-demo-kubernetes
+          token: ${{ secrets.GIT_TOKEN }}
 
-  modifygit:
-   needs: docker
-   runs-on: ubuntu-latest
-   steps:
-     - uses: actions/checkout@v3
-       name: Changing the deployment of git repo
-       with:
-         repository: 'Filippp96/k8s-demo-kubernetes'
-         token: ${{ secrets.GIT_TOKEN }}
-     - name: Modify the image
-       run: |
-         git config user.email filipkk96@gmail.com
-         git config user.name Filippp96
-         pwd
-         cat deployment.yaml
-         sed -i "s+acrk8sdemoappdev.azurecr.io/images:app-*+acrk8sdemoappdev.azurecr.io/images:app-${{ github.run_number }}+g" deployment.yaml
-         cat deployment.yaml
-         git add .
-         git commit -m 'Updated image to acrk8sdemoappdev.azurecr.io/images:app-${{ github.run_number }} by GitHub Actions'
-         git push origin main
-       env:
-         GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
-         GIT_PASSWORD: ${{ secrets.GIT_TOKEN }}
-         RUN_NUMBER: ${{ github.run_number }}
+      - name: Update deployment.yaml with new image tag
+        run: |
+          cd k8s-demo-kubernetes
+          sed -i "s|acrk8sdemoappdev.azurecr.io/images:app-[0-9]\+|acrk8sdemoappdev.azurecr.io/images:app-${{ github.run_number }}|g" deployment.yaml
+          
+      - name: Commit and push changes
+        run: |
+          cd k8s-demo-kubernetes
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add deployment.yaml
+          git commit -m "Update image tag to app-${{ github.run_number }}"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
