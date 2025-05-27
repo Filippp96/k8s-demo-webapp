@@ -73,12 +73,10 @@ jobs:
 
       - name: Update deployment.yaml with new image tag
         run: |
-          cd k8s-demo-kubernetes
           sed -i "s|acrk8sdemoappdev.azurecr.io/images:app-[0-9]\+|acrk8sdemoappdev.azurecr.io/images:app-${{ github.run_number }}|g" deployment.yaml
           
       - name: Commit and push changes
         run: |
-          cd k8s-demo-kubernetes
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add deployment.yaml
