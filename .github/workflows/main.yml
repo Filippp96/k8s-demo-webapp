@@ -51,7 +51,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Retrieve secrets from Azure Key Vault
-        uses: azure/get-keyvault-secrets@v2
+        uses: azure/get-keyvault-secrets@v1
         id: keyvault
         with:
           keyvault: kv-k8s-demo-app-dev
